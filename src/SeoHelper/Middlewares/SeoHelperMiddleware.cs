@@ -11,12 +11,12 @@ using SeoHelper.Options;
 
 namespace SeoHelper.Middlewares
 {
-    public class MetaTagMiddleware
+    public class SeoHelperMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly SeoOptions _seoOptions;
 
-        public MetaTagMiddleware(RequestDelegate next, IOptions<SeoOptions> seoOptions)
+        public SeoHelperMiddleware(RequestDelegate next, IOptions<SeoOptions> seoOptions)
         {
             _next = next;
             _seoOptions = seoOptions.Value;
@@ -24,19 +24,32 @@ namespace SeoHelper.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
+            if (context.Request.Path.Value == "/sitemap.xml")
+            {
+                context.Response.ContentType = "application/xml";
+                await context.Response.WriteAsync(SitemapGenerator.Generate(_seoOptions.Sitemap));
+                return;
+            }
+
+            if (context.Request.Path.Value == "/robots.txt")
+            {
+                var sitemapUrl = context.Request.Scheme + "://" + context.Request.Host.ToString().EnsureEndsWith('/') + "sitemap.xml";
+                await context.Response.WriteAsync(RobotsTxtGenerator.Generate(_seoOptions.RobotsTxt, sitemapUrl));
+                return;
+            }
+
             var metaTag = _seoOptions.MetaTags.FirstOrDefault(x => x.RelativeUrl.ToLowerInvariant().EnsureStartsWith('/') == context.Request.Path.Value);
-            
             if (metaTag != null)
             {
                 var generatedMetaTags = MetaTagGenerator.Generate(metaTag);
-                context.Response.Body = await ReplaceHtmlHeadTagWithMetaTags(context, generatedMetaTags);
+                context.Response.Body = await AppendMetaTagsToHeadSection(context, generatedMetaTags);
                 return;
             }
             
             await _next(context);
         }
 
-        private async Task<Stream> ReplaceHtmlHeadTagWithMetaTags(HttpContext context, string generatedMetaTags)
+        private async Task<Stream> AppendMetaTagsToHeadSection(HttpContext context, string generatedMetaTags)
         {
             var stream = context.Response.Body;
             using (var buffer = new MemoryStream())

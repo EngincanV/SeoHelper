@@ -7,7 +7,7 @@ namespace SeoHelper.Extensions
     {
         public static IApplicationBuilder UseMetaTagMiddleware(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<MetaTagMiddleware>();
+            return builder.UseMiddleware<SeoHelperMiddleware>();
         }
     }
 }
