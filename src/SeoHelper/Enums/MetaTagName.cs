@@ -1,15 +1,15 @@
 ﻿namespace SeoHelper.Enums
 {
     /// <summary>
-    /// This enum created to specify the meta-tag names.
+    /// This class created to specify the meta-tag names.
     /// </summary>
-    public enum MetaTagName : byte
+    public class MetaTagName
     {
-        Description,
-        Keywords,
-        Author,
-        Viewport,
-        Abstract,
-        Copyright
+        public const string Description = "Description";
+        public const string Keywords = "Keywords";
+        public const string Author = "Author";
+        public const string Viewport = "Viewport";
+        public const string Abstract = "Abstract";
+        public const string Copyright = "Copyright";
     }
 }
