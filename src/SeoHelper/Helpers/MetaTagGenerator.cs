@@ -11,16 +11,16 @@ namespace SeoHelper.Helpers
         {
             var builder = new StringBuilder();
             
-            if (!string.IsNullOrWhiteSpace(metaTag.Charset))
-            {
-                builder.Append(GenerateCharsetMetaTag(metaTag.Charset));
-            }
-            
             if (!string.IsNullOrWhiteSpace(metaTag.Title))
             {
                 builder.AppendLine(GenerateTitle(metaTag.Title));
             }
-
+            
+            if (!string.IsNullOrWhiteSpace(metaTag.Charset))
+            {
+                builder.AppendLine(GenerateCharsetMetaTag(metaTag.Charset));
+            }
+            
             builder.AppendLine(GenerateMetaTags(metaTag.MetaTagDescriptions));
             return builder.ToString();
         }
@@ -37,7 +37,7 @@ namespace SeoHelper.Helpers
 
         private static string GenerateMetaTags(Dictionary<string, string> metaTagDescriptions)
         {
-            if (!metaTagDescriptions.Any())
+            if (metaTagDescriptions == null || !metaTagDescriptions.Any())
             {
                 return string.Empty;
             }

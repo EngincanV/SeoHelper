@@ -1,4 +1,4 @@
-﻿namespace SeoHelper.Enums
+﻿namespace SeoHelper.Constants
 {
     /// <summary>
     /// This class created to specify the meta-tag names.
