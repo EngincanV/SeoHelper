@@ -45,7 +45,7 @@ namespace SeoHelper.Demo
 
             app.UseAuthorization();
 
-            app.UseMetaTagMiddleware();
+            app.UseSeoHelper();
 
             app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
         }

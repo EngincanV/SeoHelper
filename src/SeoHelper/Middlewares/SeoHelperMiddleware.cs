@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -42,40 +39,11 @@ namespace SeoHelper.Middlewares
             if (metaTag != null)
             {
                 var generatedMetaTags = MetaTagGenerator.Generate(metaTag);
-                context.Response.Body = await AppendMetaTagsToHeadSection(context, generatedMetaTags);
+                context.Response.Body = await HtmlHelper.AppendMetaTagsToHeadSectionAsync(context, _next, generatedMetaTags);
                 return;
             }
             
             await _next(context);
-        }
-
-        private async Task<Stream> AppendMetaTagsToHeadSection(HttpContext context, string generatedMetaTags)
-        {
-            var stream = context.Response.Body;
-            using (var buffer = new MemoryStream())
-            {
-                context.Response.Body = buffer;
-                await _next(context);
-                buffer.Seek(0, SeekOrigin.Begin);
-                
-                using (var reader = new StreamReader(buffer))
-                {
-                    var html = await reader.ReadToEndAsync();
-                    var match = Regex.Match(html, @"<head>((?:.|\n|\r)+?)<\/head>");
-                    var headTagBetweenText = match.Groups[1].Value;
-                    html = html.Replace(headTagBetweenText, headTagBetweenText + "\n" + generatedMetaTags);
-
-                    var bytes = Encoding.UTF8.GetBytes(html);
-                    using (var memoryStream = new MemoryStream(bytes))
-                    {
-                        memoryStream.Write(bytes, 0, bytes.Length);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
-                        await memoryStream.CopyToAsync(stream);
-                    }
-                }
-            }
-
-            return stream;
         }
     }
 }

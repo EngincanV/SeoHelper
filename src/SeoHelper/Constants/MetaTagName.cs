@@ -1,8 +1,5 @@
 ﻿namespace SeoHelper.Constants
 {
-    /// <summary>
-    /// This class created to specify the meta-tag names.
-    /// </summary>
     public class MetaTagName
     {
         public const string Description = "Description";
