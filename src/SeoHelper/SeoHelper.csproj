@@ -12,4 +12,12 @@
       <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <PackageId>SeoHelper</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Engincan Veske</Authors>
+        <PackageDescription>SeoHelper helps you to add meta-tags, sitemap.xml and robots.txt into your project easily.</PackageDescription>
+        <RepositoryUrl>https://github.com/EngincanV/SeoHelper</RepositoryUrl>
+    </PropertyGroup>
 </Project>
