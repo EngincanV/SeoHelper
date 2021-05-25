@@ -90,3 +90,16 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 ```
 
 > If you encounter a problem, you can examine the sample ([**SeoHelper.Demo**](https://github.com/EngincanV/SeoHelper/tree/main/samples/SeoHelper.Demo)) in this repo.
+
+---
+
+## Roadmap
+
+* **Version 1**
+- [X] Meta-tags
+- [X] Sitemap.xml
+- [X] Robots.txt
+
+* **Version 2**
+- [ ] OpenGraph tags (for social media accounts)
+- [ ] Bug-fixes
