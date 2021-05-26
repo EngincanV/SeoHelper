@@ -8,7 +8,7 @@ namespace SeoHelper.Helpers
     {
         internal static string Generate(SitemapOptions sitemap)
         {
-            if (sitemap == null || !sitemap.Urls.Any())
+            if (sitemap.Urls == null || !sitemap.Urls.Any())
             {
                 return string.Empty;
             }

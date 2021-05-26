@@ -21,28 +21,29 @@ namespace SeoHelper.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Path.Value == "/sitemap.xml")
+            if (context.Request.Path.Value == "/sitemap.xml" && _seoOptions?.Sitemap != null)
             {
                 context.Response.ContentType = "application/xml";
                 await context.Response.WriteAsync(SitemapGenerator.Generate(_seoOptions.Sitemap));
                 return;
             }
 
-            if (context.Request.Path.Value == "/robots.txt")
+            if (context.Request.Path.Value == "/robots.txt" && _seoOptions?.RobotsTxt != null)
             {
-                var sitemapUrl = context.Request.Scheme + "://" + context.Request.Host.ToString().EnsureEndsWith('/') + "sitemap.xml";
+                var sitemapUrl = $"{context.Request.Scheme}://{context.Request.Host.ToString().EnsureEndsWith('/')}sitemap.xml";
                 await context.Response.WriteAsync(RobotsTxtGenerator.Generate(_seoOptions.RobotsTxt, sitemapUrl));
                 return;
             }
 
-            var metaTag = _seoOptions.MetaTags.FirstOrDefault(x => x.RelativeUrl.ToLowerInvariant().EnsureStartsWith('/') == context.Request.Path.Value);
+            var metaTag = _seoOptions?.MetaTags?.FirstOrDefault(x => x.RelativeUrl.ToLowerInvariant().EnsureStartsWith('/') == context.Request.Path.Value);
             if (metaTag != null)
             {
                 var generatedMetaTags = MetaTagGenerator.Generate(metaTag);
-                context.Response.Body = await HtmlHelper.AppendMetaTagsToHeadSectionAsync(context, _next, generatedMetaTags);
+                context.Response.Body =
+                    await HtmlHelper.AppendMetaTagsToHeadSectionAsync(context, _next, generatedMetaTags);
                 return;
             }
-            
+
             await _next(context);
         }
     }
