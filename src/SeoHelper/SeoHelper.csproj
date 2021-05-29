@@ -15,7 +15,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <PackageId>SeoHelper</PackageId>
-        <Version>1.0.0</Version>
+        <Version>2.0.0</Version>
         <Authors>Engincan Veske</Authors>
         <PackageDescription>SeoHelper helps you to add meta-tags, sitemap.xml and robots.txt into your project easily.</PackageDescription>
         <RepositoryUrl>https://github.com/EngincanV/SeoHelper</RepositoryUrl>
