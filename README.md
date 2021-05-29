@@ -4,14 +4,14 @@ This package helps you to add meta-tags, sitemap.xml and robots.txt into your pr
 
 ## Usage
 
-1. Install the package via Nuget. 
+1. Install the package via Nuget.
 ```sh
-Install-Package SeoHelper -Version 1.0.0
+Install-Package SeoHelper -Version 2.0.0
 ```
 or
 
 ```sh
-dotnet add package SeoHelper --version 1.0.0
+dotnet add package SeoHelper --version 2.0.0
 ```
 
 2. Add following service registrations to `ConfigureServices` method in **Startup.cs**.
@@ -72,11 +72,33 @@ services.AddSeo(Configuration, sectionName: "SeoOptions");
           "AllowUrls": ["*"]
         }
       ]
+    },
+    "OpenGraph": {
+      "Twitter": {
+        "Site": "@EngincanVeske",
+        "Creator": "@EngincanVeske"
+      },
+      "Pages": [
+        {
+          "Url": "/",
+          "OgTitle": "og-title",
+          "OgType": "og-type",
+          "OgImage": "og-image.jpg",
+          "OgUrl": "og-url.com"
+        },
+        {
+          "Url": "/demo",
+          "OgTitle": "og-title2",
+          "OgType": "og-typ2e",
+          "OgImage": "og-image2.jpg",
+          "OgUrl": "og-url2.com"
+        }
+      ]
     }
   },
 ```
 
-> You can configure your options like below in **appsettings.json**.  
+> You can configure your options like below in **appsettings.json**. With v2.0.0 now you can configure your open-graph and twitter card tags as well.
 
 3. Add following custom middleware to your `Configure` method in **Startup.cs**:
 
@@ -101,5 +123,5 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 - [X] Robots.txt
 
 * **Version 2**
-- [ ] OpenGraph tags (for social media accounts)
-- [ ] Bug-fixes
+- [X] OpenGraph tags (for social media accounts)
+- [X] Bug-fixes
