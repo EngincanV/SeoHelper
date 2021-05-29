@@ -41,6 +41,22 @@ namespace SeoHelper.Middlewares
                 return;
             }
 
+            if (_seoOptions?.OpenGraph?.Twitter != null)
+            {
+                //TODO: check response type. it should be html
+                var generateTwitterCardMetaTags = MetaTagGenerator.GenerateTwitterCardMetaTags(_seoOptions.OpenGraph.Twitter);
+                context.Response.Body = await HtmlHelper.AppendMetaTagsToHeadSectionAsync(context, _next, generateTwitterCardMetaTags);
+                return;
+            }
+            
+            var openGraphMetaTag = _seoOptions?.OpenGraph?.Pages?.FirstOrDefault(x => x.Url.ToLowerInvariant().EnsureStartsWith('/') == context.Request.Path.Value);
+            if (openGraphMetaTag != null)
+            {
+                var generatedOpenGraphMetaTags = MetaTagGenerator.GenerateOpenGraphTags(openGraphMetaTag);
+                context.Response.Body = await HtmlHelper.AppendMetaTagsToHeadSectionAsync(context, _next, generatedOpenGraphMetaTags);
+                return;
+            }
+
             await _next(context);
         }
 

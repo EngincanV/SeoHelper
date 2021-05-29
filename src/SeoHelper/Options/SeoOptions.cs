@@ -9,5 +9,7 @@ namespace SeoHelper.Options
         public SitemapOptions Sitemap { get; set; }
 
         public RobotsTxtOptions RobotsTxt { get; set; }
+
+        public OpenGraphOptions OpenGraph { get; set; }
     }
 }
