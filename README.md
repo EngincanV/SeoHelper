@@ -1,5 +1,7 @@
 # SeoHelper
 
+[![CodeFactor](https://www.codefactor.io/repository/github/engincanv/seohelper/badge/main)](https://www.codefactor.io/repository/github/engincanv/seohelper/overview/main)
+
 This package helps you to add meta-tags, sitemap.xml and robots.txt into your project easily.
 
 ## Usage
