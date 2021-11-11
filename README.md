@@ -1,6 +1,7 @@
 # SeoHelper
 
 [![CodeFactor](https://www.codefactor.io/repository/github/engincanv/seohelper/badge/main)](https://www.codefactor.io/repository/github/engincanv/seohelper/overview/main)
+[![NuGet](https://img.shields.io/nuget/v/SeoHelper.svg?style=flat-square)](https://www.nuget.org/packages/SeoHelper)
 
 This package helps you to add meta-tags, sitemap.xml and robots.txt into your project easily.
 
