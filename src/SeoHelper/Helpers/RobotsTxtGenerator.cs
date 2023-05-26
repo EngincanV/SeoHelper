@@ -4,7 +4,7 @@ using SeoHelper.Options;
 
 namespace SeoHelper.Helpers
 {
-    internal static class RobotsTxtGenerator
+    internal struct RobotsTxtGenerator
     {
         internal static string Generate(RobotsTxtOptions robotsTxt, string sitemapUrl = null)
         {

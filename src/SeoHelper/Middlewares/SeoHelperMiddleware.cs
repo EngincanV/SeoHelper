@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -34,11 +35,14 @@ namespace SeoHelper.Middlewares
                 return;
             }
 
-            var generatedMetaTags = GenerateMetaTags(context.Request.Path.Value);
-            if (!string.IsNullOrWhiteSpace(generatedMetaTags))
+            if (context.Request.ContentType == "text/html")
             {
-                context.Response.Body = await HtmlHelper.AppendMetaTagsToHeadSectionAsync(context, _next, generatedMetaTags);
-                return;
+                var generatedMetaTags = GenerateMetaTags(context.Request.Path.Value);
+                if (!string.IsNullOrWhiteSpace(generatedMetaTags))
+                {
+                    context.Response.Body = await HtmlHelper.AppendMetaTagsToHeadSectionAsync(context, _next, generatedMetaTags);
+                    return;
+                }    
             }
 
             await _next(context);
@@ -46,28 +50,26 @@ namespace SeoHelper.Middlewares
 
         private string GenerateMetaTags([NotNull] string requestPath)
         {
-            var metaTags = string.Empty;
+            var metaTags = new StringBuilder();
             if (_seoOptions?.OpenGraph?.Twitter != null)
             {
-                var generateTwitterCardMetaTags = MetaTagGenerator.GenerateTwitterCardMetaTags(_seoOptions.OpenGraph.Twitter);
-                metaTags += generateTwitterCardMetaTags;
+                metaTags.AppendLine(MetaTagGenerator.GenerateTwitterCardMetaTags(_seoOptions.OpenGraph.Twitter));
             }
             
             var metaTag = _seoOptions?.MetaTags?.FirstOrDefault(x => x.RelativeUrl.ToLowerInvariant().EnsureStartsWith('/') == requestPath.ToLowerInvariant());
             if (metaTag != null)
             {
-                var generatedMetaTags = MetaTagGenerator.Generate(metaTag);
-                metaTags += generatedMetaTags;
+                metaTags.AppendLine(MetaTagGenerator.Generate(metaTag));
             }
 
             var openGraphMetaTag = _seoOptions?.OpenGraph?.Pages?.FirstOrDefault(x => x.Url.ToLowerInvariant().EnsureStartsWith('/') == requestPath.ToLowerInvariant());
             if (openGraphMetaTag != null)
             {
                 var generatedOpenGraphMetaTags = MetaTagGenerator.GenerateOpenGraphTags(openGraphMetaTag);
-                metaTags += generatedOpenGraphMetaTags;
+                metaTags.AppendLine(generatedOpenGraphMetaTags);
             }
 
-            return metaTags;
+            return metaTags.ToString();
         }
 
         private async Task GenerateSitemapXmlPageAsync(HttpContext context)

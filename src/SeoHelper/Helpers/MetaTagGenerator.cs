@@ -7,7 +7,7 @@ using SeoHelper.Options;
 
 namespace SeoHelper.Helpers
 {
-    internal static class MetaTagGenerator
+    internal struct MetaTagGenerator
     {
         public static string Generate(MetaTagOptions metaTag)
         {

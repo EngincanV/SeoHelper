@@ -4,7 +4,7 @@ using SeoHelper.Options;
 
 namespace SeoHelper.Helpers
 {
-    internal static class SitemapGenerator
+    internal struct SitemapGenerator
     {
         internal static string Generate(SitemapOptions sitemap)
         {
